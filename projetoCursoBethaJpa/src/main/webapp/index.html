@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Chamados Técnicos</title>
+
+ <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+	<div class="modal fade" id="delete-modal" tabindex="-1" role="delete" aria-labelledby="modalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="modalLabel">Excluir Chamado</h4>
+		</div>
+		<div class="modal-body">
+			Deseja realmente excluir este chamado?
+		</div>
+		<div class="modal-footer">
+			<button onclick="ctrl.remove()" type="button" class="btn btn-primary" data-dismiss="modal">Sim</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">N&atilde;o</button>
+		</div>
+		</div>
+	</div>
+	</div> 
+
+	<div id="main" class="container-fluid">
+		<div id="menu">
+		</div>
+		<div id="mensagem" class="alert text-center" style="display:nome" role="alert"></div>
+		<div id="top" class="row">
+			<div class="col-md-3">
+				<h2>Chamados</h2>
+			</div>
+		
+			<div class="col-md-6">
+				<form id="formPesquisar" role="pesquisar">
+					<div class="input-group h2 form-group">
+						<input name="dadoPesquisa" class="form-control" id="pesquisa" type="text" placeholder="Pesquisar Chamados">
+						<span class="input-group-btn">
+							<button id="btnPesquisar" class="btn btn-primary" type="button">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>								
+				</form>
+			</div>
+		
+			<div class="col-md-3">
+				<a id="btnNovo" class="btn btn-primary pull-right h2">
+					<span class="glyphicon glyphicon-plus-sign"></span> Novo
+				</a>                                
+			</div>
+		</div> 	
+
+		<div class="modal fade" data-backdrop="static" id="cadastroChamado-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button id="btnFecharFormChamado" type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+							<h4 id="modalLabelCadastro" class="modal-title">Cadastro de Chamados <samp id="idModalLabelCadastro">((id))</samp></h4>
+						</div>
+						<div class="modal-body">
+							<form id="formChamado" role="cadastro">
+								<div class="row">
+								<div class="form-group col-md-3">
+									<input name="id" type="hidden" readonly class="form-control">
+								</div>
+								</div>
+								<div class="row">
+								<div class="form-group col-md-8">
+									<label for="cliente">Cliente</label>
+									<select name="cliente" class="form-control" required>
+										<option value="((id))">((cliente))</option>
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="equipamento">Equipamento</label>
+									<select name="equipamento" class="form-control" required>
+										<option value="((id))">((equipamento))</option>
+									</select>
+								</div>
+								</div>				
+								<div class="row">
+								<div class="form-group col-md-6">
+									<label for="problema">Problema</label>
+									<textarea id="descricaoProblema" name="descricaoProblema" rows="5" class="form-control" placeholder="Digite o problema do equipamento" required maxlength="1000"></textarea>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="solucao">Solução</label>
+									<textarea id="descricaoSolucao" name="descricaoSolucao" rows="5" class="form-control" placeholder="Digite a solução do problema" required maxlength="1000"></textarea>
+								</div>
+								</div>				
+								<div class="row">
+								<div class="form-group col-md-6">
+									<label for="emissao">Emissão</label>									
+									<input name="emissao" type="DateTime-Local" class="form-control" disabled required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="aprovacao">Aprovação</label>
+									<input name="aprovacao" type="DateTime-Local" class="form-control" disabled>
+								</div>
+								</div>				
+								<div class="row">
+								<div class="form-group col-md-6">
+									<label for="tecnico">Técnico</label>
+									<select name="tecnico" class="form-control" required>
+										<option value="((id))">((tecnico))</option>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="gerente">Gerente</label>
+									<select name="gerente" class="form-control" required>
+										<option value="((id))">((gerente))</option>
+									</select>						
+								</div>
+								</div>
+								<div class="row">
+								<div class="form-group col-md-6">
+									<label for="tipo">Tipo</label>
+									<select name="tipo" class="form-control" required>
+										<option value="I" selected>Interno</option>
+										<option value="E">Externo</option>
+									</select>						
+								</div>
+								<div class="form-group col-md-6">
+									<label for="status">Status</label>
+									<select name="status" class="form-control" required disabled>
+										<option value="A" selected>Aberto</option>
+										<option value="P">Aprovado</option>
+										<option value="C">Cancelado</option>
+										<option value="F">Finalizado</option>
+									</select>						
+								</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button id="btnSalvar" type="button" class="btn btn-primary">Salvar</button>
+							<button id="btnCancelar" type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+						</div>
+					</div>
+				</div>
+			</div>				
+
+     	<hr />
+     	<div id="divChamado" class="row">
+			<div class="table-responsive col-md-12">
+				<table class="table table-striped table-hover" cellspacing="0" cellpadding="0" width="100%">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Problema</th>
+							<th>Emissão</th>
+							<th>Aprovação</th>
+							<th>Status</th>
+							<th class="actions">Ações</th>
+							</tr>
+					</thead>
+					<tbody>
+						<tr>
+						<td width="8%">((id))</td>
+						<td width="50%">((problema))</td>
+						<td width="10%">((emissao))</td>
+						<td width="10%">((aprovacao))</td>
+						<td width="10%">((status))</td>
+						<td width="12%" class="actions">
+							<a onclick="ctrl.editar(((id)))" class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="modal" data-target="#cadastroChamado-modal" title="Editar"></a>
+							<a onclick="ctrl.aprovar(((id)))" class="btn btn-primary btn-xs glyphicon glyphicon-ok" data-toggle="modal" data-target="#cadastroChamado-modal" title="Aprovar"></a>
+							<a onclick="ctrl.finalizar(((id)))" class="btn btn-success btn-xs glyphicon glyphicon-saved" href="#" title="Finalizar"></a>
+							<a onclick="ctrl.cancelar(((id)))" class="btn btn-warning btn-xs glyphicon glyphicon-remove" href="#" title="Cancelar"></a>
+							<a onclick="ctrl.setRemove(((id)))" class="btn btn-danger btn-xs glyphicon glyphicon-trash"  href="#" data-toggle="modal" data-target="#delete-modal" title="Excluir"></a>
+						</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="text-center">
+					<div id="paginacao" class="pagination">
+					</div>					
+				</div>
+			</div>
+		</div> 
+	</div>		
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+	<script src="dist/js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/chamado.js"></script>
+	<script src="js/jquery.serializeObject.min.js"></script>
+</body>
+</html>
